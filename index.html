@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Zyrln — راه‌اندازی VPN شخصی رایگان</title>
+
+<meta name="description" content="یه VPN شخصی رایگان با Cloudflare + Google Apps Script — برای رفع فیلتر سایت‌ها در ایران">
+<meta name="keywords" content="VPN, ایران, کلودفلر, آپس اسکریپت, رایگان, پروکسی, فیلترشکن">
+<meta name="theme-color" content="#10b981">
+
+<meta property="og:title" content="Zyrln — VPN شخصی رایگان">
+<meta property="og:description" content="با ۱۵ دقیقه کار، یه VPN شخصی برای خودت بساز. بدون VPS، رایگان.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fa_IR">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='28'%3E🌐%3C/text%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <span class="logo-icon">🌐</span>
+      <h1>Zyrln</h1>
+      <span class="badge">رایگان</span>
+    </div>
+    <nav class="nav">
+      <a href="#how-it-works">چطور کار می‌کنه</a>
+      <a href="#limits">محدودیت‌ها</a>
+      <a href="https://t.me/Zyrln_script_bot" target="_blank">ربات تلگرام</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h2>یه VPN شخصی رایگان برای خودت بساز</h2>
+    <p class="subtitle">
+      با ترکیب <strong>Cloudflare Workers</strong> و <strong>Google Apps Script</strong>،
+      یه پروکسی شخصی برای مرورگرت بساز — بدون VPS، بدون هزینه ماهانه.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <strong>100,000</strong>
+        <span>درخواست در روز رایگان</span>
+      </div>
+      <div class="stat">
+        <strong>15 دقیقه</strong>
+        <span>زمان راه‌اندازی</span>
+      </div>
+      <div class="stat">
+        <strong>300+</strong>
+        <span>Edge جهانی</span>
+      </div>
+    </div>
+    <a href="#setup" class="cta-button">🚀 شروع راه‌اندازی</a>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="how-it-works" class="section">
+  <div class="container">
+    <h3>چطور کار می‌کنه؟</h3>
+    <p class="section-desc">معماری ساده و موثر — ترافیک تو از چند جای امن می‌گذره و به سایت می‌رسه.</p>
+    
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-icon">📱</div>
+        <div class="flow-label">موبایل تو</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-icon">🅖</div>
+        <div class="flow-label">Apps Script<br><small>(گوگل)</small></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-icon">☁️</div>
+        <div class="flow-label">Cloudflare<br><small>Worker</small></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-icon">🌍</div>
+        <div class="flow-label">سایت مقصد</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Setup wizard -->
+<section id="setup" class="section setup">
+  <div class="container">
+    <h3>🎯 راه‌اندازی — قدم به قدم</h3>
+    <p class="section-desc">روی هر مرحله کلیک کن تا باز بشه.</p>
+    
+    <!-- مرحله ۱: حساب کلودفلر -->
+    <details class="step" open>
+      <summary>
+        <span class="step-num">۱</span>
+        <span class="step-title">ساخت حساب Cloudflare (رایگان)</span>
+        <span class="step-time">۲ دقیقه</span>
+      </summary>
+      <div class="step-content">
+        <ol>
+          <li>برو به <a href="https://dash.cloudflare.com/sign-up" target="_blank">dash.cloudflare.com/sign-up</a></li>
+          <li>ایمیلت رو وارد کن (همون جیمیلی که برای Apps Script استفاده می‌کنی)</li>
+          <li>یه رمز قوی بساز (حداقل ۸ کاراکتر)</li>
+          <li>روی <strong>Create Account</strong> بزن</li>
+          <li>ایمیل تأیید رو در اینباکس جیمیلت چک کن</li>
+          <li>روی لینک تأیید کلیک کن</li>
+        </ol>
+        <div class="hint">
+          <strong>💡 نکته برای کاربر ایرانی:</strong>
+          اگه با IP ایران باز نمی‌شه، یه پروکسی ساده وصل کن. بعد از ثبت‌نام دیگه نیازی نیست.
+        </div>
+      </div>
+    </details>
+    
+    <!-- مرحله ۲: API Token -->
+    <details class="step">
+      <summary>
+        <span class="step-num">۲</span>
+        <span class="step-title">ساخت API Token</span>
+        <span class="step-time">۳ دقیقه</span>
+      </summary>
+      <div class="step-content">
+        <ol>
+          <li>برو به <a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank">صفحه API Tokens</a></li>
+          <li>روی <strong>Create Token</strong> کلیک کن</li>
+          <li>پایین صفحه، <strong>"Edit Cloudflare Workers"</strong> پیدا کن</li>
+          <li>روی <strong>Use template</strong> کنارش بزن</li>
+          <li>نام بذار: <code>Zyrln</code></li>
+          <li>
+            <strong>Permissions</strong> رو دست نزن. باید این ۵ تا باشن:
+            <ul class="perms">
+              <li>✅ Account → Workers Scripts → Edit</li>
+              <li>✅ Account → Workers KV Storage → Edit</li>
+              <li>✅ Account → Workers Routes → Edit</li>
+              <li>✅ Account → Account Settings → Read</li>
+              <li>✅ User → User Details → Read</li>
+            </ul>
+          </li>
+          <li><strong>Account Resources</strong>: Include → All accounts</li>
+          <li><strong>Client IP Filtering</strong>: خالی بذار</li>
+          <li><strong>TTL</strong>: خالی بذار (همیشه فعال)</li>
+          <li>روی <strong>Continue to summary</strong> → <strong>Create Token</strong></li>
+          <li>⚠️ <strong>توکن رو فوراً کپی کن!</strong> فقط یک‌بار نشون داده می‌شه.</li>
+        </ol>
+        <div class="hint">
+          <strong>🔒 امنیت:</strong>
+          توکن فقط برای ساخت Worker استفاده می‌شه. بعد از ساخت می‌تونی از همون صفحه پاکش کنی.
+        </div>
+      </div>
+    </details>
+    
+    <!-- مرحله ۳: Account ID -->
+    <details class="step">
+      <summary>
+        <span class="step-num">۳</span>
+        <span class="step-title">پیدا کردن Account ID</span>
+        <span class="step-time">۱ دقیقه</span>
+      </summary>
+      <div class="step-content">
+        <ol>
+          <li>برو به <a href="https://dash.cloudflare.com" target="_blank">dash.cloudflare.com</a></li>
+          <li>در صفحه اصلی، <strong>سمت راست</strong>، یه باکس به اسم <strong>Account ID</strong> داری</li>
+          <li>روی دکمه کپی (📋) کنارش بزن</li>
+        </ol>
+        <p>شبیه این می‌شه:</p>
+        <code class="example">92857a409a64ebf4670a516cc08ad8e9</code>
+        <p>(۳۲ کاراکتر، فقط حروف کوچک a-f و اعداد)</p>
+      </div>
+    </details>
+    
+    <!-- مرحله ۴: ورودی فرم -->
+    <details class="step" open id="build-step">
+      <summary>
+        <span class="step-num">۴</span>
+        <span class="step-title">ساخت Worker — خودکار</span>
+        <span class="step-time">۳۰ ثانیه</span>
+      </summary>
+      <div class="step-content">
+        <p>هر دو رو وارد کن، ربات بقیه رو خودش انجام می‌ده:</p>
+        
+        <form id="build-form" class="form">
+          <label>
+            <span>🔑 Cloudflare API Token</span>
+            <input type="text" id="cf-token" placeholder="cfut_..." autocomplete="off" spellcheck="false">
+            <small>توکنی که در مرحله ۲ ساختی</small>
+          </label>
+          
+          <label>
+            <span>🆔 Cloudflare Account ID</span>
+            <input type="text" id="cf-account-id" placeholder="32 hex chars" autocomplete="off" spellcheck="false" maxlength="32">
+            <small>از صفحه اصلی داشبورد</small>
+          </label>
+          
+          <button type="submit" id="build-btn" class="cta-button">
+            🚀 ساخت Worker
+          </button>
+        </form>
+        
+        <div id="build-result" class="hidden"></div>
+      </div>
+    </details>
+    
+    <!-- مرحله ۵: Apps Script -->
+    <details class="step" id="gas-step">
+      <summary>
+        <span class="step-num">۵</span>
+        <span class="step-title">ساخت Apps Script</span>
+        <span class="step-time">۵ دقیقه</span>
+      </summary>
+      <div class="step-content">
+        <p>⚠️ این مرحله بعد از ساخت Worker فعال می‌شه.</p>
+        
+        <div id="gas-instructions" class="hidden">
+          <h4>قدم به قدم:</h4>
+          <ol>
+            <li>برو به <a href="https://script.google.com" target="_blank">script.google.com</a></li>
+            <li>روی <strong>+ New project</strong> کلیک کن</li>
+            <li>کد پیش‌فرض رو پاک کن (<kbd>Ctrl+A</kbd> → <kbd>Delete</kbd>)</li>
+            <li>کد زیر رو کپی و paste کن:</li>
+          </ol>
+          
+          <div class="code-box">
+            <button class="copy-btn" data-target="gas-code">📋 کپی کد</button>
+            <pre id="gas-code"></pre>
+          </div>
+          
+          <ol start="5">
+            <li><kbd>Ctrl+S</kbd> بزن برای ذخیره</li>
+            <li>روی <strong>Deploy → New deployment</strong> بزن</li>
+            <li>روی آیکون ⚙️ کنار <em>Select type</em> بزن → <strong>Web app</strong></li>
+            <li>تنظیمات:
+              <ul>
+                <li><strong>Description:</strong> <code>Zyrln</code></li>
+                <li><strong>Execute as:</strong> Me</li>
+                <li><strong>Who has access:</strong> ⚠️ <strong>Anyone</strong></li>
+              </ul>
+            </li>
+            <li>روی <strong>Deploy</strong> کلیک کن</li>
+            <li>اگه گفت Authorize: <strong>Authorize access</strong> → حساب → <strong>Advanced</strong> → <strong>Go to ... (unsafe)</strong> → <strong>Allow</strong></li>
+            <li>یه URL یا Deployment ID می‌گیری. کپی کن.</li>
+          </ol>
+          
+          <label class="form-label-block">
+            <span>📋 Deployment ID یا URL کامل</span>
+            <input type="text" id="deployment-id" placeholder="AKfycb..." autocomplete="off" spellcheck="false">
+          </label>
+          
+          <button type="button" id="finish-btn" class="cta-button">
+            ✅ ساخت کانفیگ نهایی
+          </button>
+        </div>
+      </div>
+    </details>
+    
+    <!-- مرحله ۶: کانفیگ نهایی -->
+    <details class="step" id="final-step">
+      <summary>
+        <span class="step-num">۶</span>
+        <span class="step-title">کانفیگ نهایی</span>
+        <span class="step-time">۲ دقیقه</span>
+      </summary>
+      <div class="step-content">
+        <div id="final-content" class="hidden">
+          <h4>🎉 تبریک! کانفیگ شما آماده‌ست</h4>
+          
+          <div class="config-box">
+            <h5>📲 کانفیگ Zyrln (برای import در اپ):</h5>
+            <div class="code-box">
+              <button class="copy-btn" data-target="config-json">📋 کپی</button>
+              <pre id="config-json"></pre>
+            </div>
+          </div>
+          
+          <h4>📱 نصب و استفاده:</h4>
+          <ol>
+            <li>اپ Zyrln اندروید رو از <a href="https://github.com/ajavadinezhad/zyrln/releases/latest" target="_blank">اینجا دانلود کن</a></li>
+            <li>اپ رو باز کن</li>
+            <li>روی <strong>Install CA Certificate</strong> بزن (یک‌بار لازمه)</li>
+            <li>کانفیگ بالا رو کپی کن</li>
+            <li>روی <strong>Import from Clipboard</strong> بزن</li>
+            <li>روی دکمه ⏻ سبز بزن</li>
+            <li>مرورگرت رو باز کن — هر سایتی! 🚀</li>
+          </ol>
+          
+          <div class="warning">
+            <strong>⚠️ محدودیت‌ها:</strong>
+            <ul>
+              <li>فقط مرورگر کار می‌کنه (نه اپ‌های Telegram/Instagram native)</li>
+              <li>برای Full Tunnel همه اپ‌ها، از <a href="https://t.me/Mhrv_script_bot" target="_blank">@Mhrv_script_bot</a> استفاده کن</li>
+              <li>محدودیت Cloudflare Free: ۱۰۰هزار درخواست در روز</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- Limits -->
+<section id="limits" class="section bg-gray">
+  <div class="container">
+    <h3>⚠️ محدودیت‌ها (مهم!)</h3>
+    
+    <div class="cards">
+      <div class="card">
+        <h4>✅ چی کار می‌کنه</h4>
+        <ul>
+          <li>🌐 مرورگرها (Chrome, Firefox, ...)</li>
+          <li>📺 یوتیوب وب</li>
+          <li>📸 اینستاگرام وب</li>
+          <li>🔍 سایت‌های فیلتر شده</li>
+          <li>🤖 ChatGPT و سایت‌های AI (با احتمال captcha)</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h4>❌ چی کار نمی‌کنه</h4>
+        <ul>
+          <li>📱 اپ‌های Telegram, Instagram, WhatsApp</li>
+          <li>🎮 بازی‌های آنلاین</li>
+          <li>📞 تماس‌های ویدیویی</li>
+          <li>🎬 برخی استریم‌های ویدیویی</li>
+          <li>🔄 Full Tunnel (همه ترافیک)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="hint">
+      <strong>💡 نیاز به Full Tunnel داری؟</strong>
+      اگه می‌خوای همه اپ‌ها کار کنن (نه فقط مرورگر)، از سرویس اصلی ما با VPS استفاده کن:
+      <br>
+      <a href="https://t.me/Mhrv_script_bot" target="_blank">@Mhrv_script_bot</a>
+    </div>
+  </div>
+</section>
+
+<!-- Credits -->
+<section class="section bg-gray">
+  <div class="container">
+    <h3>💝 منابع و الهام</h3>
+    <p>این پروژه ترکیب چند تا ایده و کد متن‌باز ـه. ممنون از این عزیزان:</p>
+    
+    <div class="credits">
+      <div class="credit-item">
+        <strong>Zyrln</strong> by <a href="https://github.com/ajavadinezhad/zyrln" target="_blank">@ajavadinezhad</a>
+        <small>اپ اندروید + معماری Apps Script + Worker</small>
+      </div>
+      <div class="credit-item">
+        <strong>MasterHttpRelayVPN-RUST</strong> by <a href="https://github.com/therealaleph/MasterHttpRelayVPN-RUST" target="_blank">@therealaleph</a>
+        <small>الهام از معماری Apps Script relay</small>
+      </div>
+      <div class="credit-item">
+        <strong>Cloudflare Workers</strong>
+        <small>پلتفرم Edge برای exit point</small>
+      </div>
+      <div class="credit-item">
+        <strong>Google Apps Script</strong>
+        <small>relay با domain fronting</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Support / Donate -->
+<section class="section">
+  <div class="container center">
+    <h3>💝 از پروژه حمایت کن</h3>
+    <p>این پروژه کاملاً رایگانه. اگه برات مفید بود می‌تونی با هر مبلغی حمایت کنی.</p>
+    <p>برای حمایت از طریق <a href="https://t.me/Zyrln_script_bot" target="_blank">@Zyrln_script_bot</a> روی «💝 حمایت» بزن.</p>
+    
+    <h4>🆘 پشتیبانی</h4>
+    <p>
+      💬 ربات: <a href="https://t.me/Zyrln_script_bot" target="_blank">@Zyrln_script_bot</a><br>
+      👤 پشتیبانی: <a href="https://t.me/Kian_irani_t" target="_blank">@Kian_irani_t</a><br>
+      📢 کانال: <a href="https://t.me/kian_irani_cdn_f" target="_blank">@kian_irani_cdn_f</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>
+      ساخته شده با ❤️ توسط <a href="https://github.com/KIAN-IRANI" target="_blank">KIAN-IRANI</a>
+      &nbsp;|&nbsp;
+      <a href="https://github.com/KIAN-IRANI/zyrln-setup" target="_blank">منبع باز در GitHub</a>
+      &nbsp;|&nbsp;
+      MIT License
+    </p>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>
