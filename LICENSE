@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Kian Irani
+Copyright (c) 2026 KIAN-IRANI
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Credits & Attribution
+
+This project is inspired by and builds upon:
+
+- **Zyrln** by @ajavadinezhad (https://github.com/ajavadinezhad/zyrln)
+  - Android VPN app and core relay architecture
+  - Apps Script and Worker code patterns
+
+- **MasterHttpRelayVPN-RUST** by @therealaleph (https://github.com/therealaleph/MasterHttpRelayVPN-RUST)
+  - Apps Script relay architecture inspiration
+  - Domain fronting techniques
+
+Please respect the licenses of these upstream projects.
